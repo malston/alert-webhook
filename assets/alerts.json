@@ -1,0 +1,41 @@
+{
+    "version": "4",
+    "groupKey": "my-alerts",
+    "status": "firing",
+    "receiver": "mail",
+    "groupLabels": {
+        "grouplabelalertname": "TestAlert",
+        "grouplabeldev": "sda1",
+        "grouplabelinstance": "example1"
+    },
+    "commonLabels": {
+        "commonlabelalertname": "TestAlert",
+        "commonlabeldev": "sda1",
+        "commonlabelinstance": "example1"
+    },
+    "commonAnnotations": {
+        "commonannotationalertname": "TestAlert",
+        "commonannotationdev": "sda1",
+        "commonannotationinstance": "example1"
+    },
+    "externalURL": "http://alertmanager-02.haas440.pez.pivotal.io",
+    "alerts": [
+        {
+            "status": "firing",
+            "labels": {
+                "alertname": "TestAlert",
+                "dev": "sda1",
+                "instance": "example1",
+                "severity": "CRITICAL"
+            },
+            "annotations": {
+                "emails": "marktalston@gmail.com",
+                "info": "The disk sda1 is running full",
+                "summary": "please check the instance example1"
+            },
+            "startsAt": "2019-12-19T13:22:53.108Z",
+            "endsAt": "2019-12-19T13:23:53.108Z",
+            "generatorURL": "http://identifies.the.entity.that.caused.the.alert"
+        }
+    ]
+}
