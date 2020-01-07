@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -49,20 +50,24 @@ func logging(h http.Handler) http.Handler {
 		if err != nil {
 			panic(err)
 		}
-		body := ioutil.NopCloser(bytes.NewBuffer(b))
-		logRawRequest(r)
-		r.Body = body
+		// log.Printf("body: %s\n", string(b))
+		r1 := ioutil.NopCloser(bytes.NewBuffer(b))
+		r2 := ioutil.NopCloser(bytes.NewBuffer(b))
+		logRawRequest(w, r1)
+		r.Body = r2
 		h.ServeHTTP(w, r)
 	})
 }
 
-func logRawRequest(r *http.Request) {
-	b, _ := ioutil.ReadAll(r.Body)
+func logRawRequest(w http.ResponseWriter, r io.Reader) {
+	b, _ := ioutil.ReadAll(r)
 	var buf bytes.Buffer
 	if err := json.Indent(&buf, b, "", "  "); err != nil {
-		log.Printf("error parsing json: %s", err.Error())
+		log.Printf("error parsing json: %s\n", err.Error())
+		asJSON(w, http.StatusBadRequest, err.Error())
+		return
 	}
-	log.Println("\n" + buf.String())
+	log.Printf("\n%s\n", buf.String())
 }
 
 func gmailSend(alert template.Alert) {
@@ -180,9 +185,9 @@ func webhook(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Alert: status=%s,Labels=%v,Annotations=%v", alert.Status, alert.Labels, alert.Annotations)
 		severity := alert.Labels["severity"]
 		switch strings.ToUpper(severity) {
-		case "CRITICAL":
-			gmailSend(alert)
 		case "NONE":
+			gmailSend(alert)
+		case "CRITICAL":
 			logSend(alert, r)
 		default:
 			log.Printf("no action on severity: %s\n", severity)

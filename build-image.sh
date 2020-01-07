@@ -3,7 +3,7 @@
 set -eo pipefail
 
 docker_image_name="${1:-"malston/alert-webhook"}"
-docker_image_tag="${2:-"0.1.0"}"
+docker_image_tag="${2:-"0.1.1"}"
 project="${3:-"prometheus"}"
 
 make build-linux

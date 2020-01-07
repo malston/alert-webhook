@@ -41,7 +41,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: alert-webhook
-        image: harbor.haas-440.pez.pivotal.io/prometheus/malston/alert-webhook:0.1.0
+        image: harbor.haas-440.pez.pivotal.io/prometheus/malston/alert-webhook:0.1.1
         imagePullPolicy: Always
         env:
           - name: PORT
