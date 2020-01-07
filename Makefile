@@ -12,7 +12,7 @@ GOMOD=$(GOCMD) mod
 
 # Binary names
 BINARY=alert-webhook
-BINARY_UNIX=$(BINARY)_unix
+BINARY_UNIX=$(BINARY)-linux-amd64
 
 build: ## Build the main 'kmgmt' binary
 	$(GOBUILD) -o ${BINARY} main.go
