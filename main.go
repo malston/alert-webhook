@@ -95,7 +95,6 @@ func gmailSend(alert template.Alert) {
 
 	_, err = svr.Users.Messages.Send(user, &message).Do()
 	if err != nil {
-		// log.Printf("Error sending gmail: %v", err)
 		log.Fatalf("Error sending gmail: %v", err)
 	}
 	r, err := svr.Users.Labels.List(user).Do()
