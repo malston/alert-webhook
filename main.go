@@ -200,9 +200,8 @@ func healthz(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	webhookFunc := http.HandlerFunc(webhook)
 	http.HandleFunc("/healthz", healthz)
-	http.Handle("/webhook", logging(webhookFunc))
+	http.Handle("/webhook", logging(http.HandlerFunc(webhook)))
 
 	listenAddress := ":8080"
 	if os.Getenv("PORT") != "" {
