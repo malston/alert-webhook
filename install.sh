@@ -15,7 +15,7 @@ function create_token() {
     kubectl create configmap -n "${namespace}" am-webhook-config --from-file=config/
 }
 
-namespace="${1:-amhook}"
+namespace="monitoring"
 create_token="${2}"
 
 if [[ $create_token ]]; then
