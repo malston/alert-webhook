@@ -13,6 +13,8 @@
 
 # built artifacts
 /alert-webhook
+/alert-webhook-token
+/alert-webhook-token-linux-amd64
 /alert-webhook-linux-amd64
 /alert-webhook.zip
 /alert-webhook-*.tgz

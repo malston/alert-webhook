@@ -11,17 +11,26 @@ GOGET=$(GOCMD) get
 GOMOD=$(GOCMD) mod
 
 # Binary names
-BINARY=alert-webhook
-BINARY_UNIX=$(BINARY)-linux-amd64
+MAIN_BINARY=alert-webhook
+TOKEN_BINARY=${MAIN_BINARY}-token
+MAIN_BINARY_UNIX=$(MAIN_BINARY)-linux-amd64
+TOKEN_BINARY_UNIX=$(TOKEN_BINARY)-linux-amd64
 
-build: ## Build the main 'kmgmt' binary
-	$(GOBUILD) -o ${BINARY} main.go
+build-token:
+	$(GOBUILD) -o ${TOKEN_BINARY} gtoken.go
+
+build: build-token
+	$(GOBUILD) -o ${MAIN_BINARY} main.go
 
 build-linux: ## Build a linux binary
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_UNIX) main.go
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(MAIN_BINARY_UNIX) main.go
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o ${TOKEN_BINARY_UNIX} gtoken.go
 
 clean: ## Clean the working dir and it's compiled binary
-	if [ -f ${BINARY} ] ; then rm ${BINARY} ; fi
+	if [ -f ${MAIN_BINARY} ] ; then rm ${MAIN_BINARY} ; fi
+	if [ -f ${TOKEN_BINARY} ] ; then rm ${TOKEN_BINARY} ; fi
+	if [ -f ${MAIN_BINARY_UNIX} ] ; then rm ${MAIN_BINARY_UNIX} ; fi
+	if [ -f ${TOKEN_BINARY_UNIX} ] ; then rm ${TOKEN_BINARY_UNIX} ; fi
 
 unittest: ## Run unit tests
 	$(GOTEST) -short  ./...
