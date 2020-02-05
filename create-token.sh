@@ -22,4 +22,8 @@ function create_token() {
     ./alert-webhook-token
 }
 
+GMAIL_TO="${1:?"Email address required as first argument"}"
+export GMAIL_TO
+
+make clean
 create_token

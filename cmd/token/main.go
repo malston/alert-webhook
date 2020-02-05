@@ -76,7 +76,11 @@ func main() {
 	}
 
 	user := "me"
-	email := "marktalston@gmail.com"
+	email := os.Getenv("GMAIL_TO")
+	if email == "" {
+		log.Fatalf("GMAIL_TO env var is not set")
+	}
+	fmt.Println("Sending email to " + email)
 
 	temp := []byte("From: " + user + "\r\n" +
 		"reply-to: " + email + "\r\n" +

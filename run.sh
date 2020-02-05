@@ -13,6 +13,7 @@ make build
 ./alert-webhook >> ${LOG_DIR}/alert-webhook.stdout.log \
     2>> ${LOG_DIR}/alert-webhook.stderr.log &
 
-sleep 2
-
-curl -v --data "@assets/alerts.json" http://127.0.0.1:9090/webhook
+for i in {1..5}; do
+    sleep 2
+    curl -v --data "@assets/alerts.json" http://127.0.0.1:9090/webhook
+done
