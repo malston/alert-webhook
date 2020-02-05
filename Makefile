@@ -17,14 +17,14 @@ MAIN_BINARY_UNIX=$(MAIN_BINARY)-linux-amd64
 TOKEN_BINARY_UNIX=$(TOKEN_BINARY)-linux-amd64
 
 build-token:
-	$(GOBUILD) -o ${TOKEN_BINARY} gtoken.go
+	$(GOBUILD) -o ${TOKEN_BINARY} cmd/token/main.go
 
 build: build-token
-	$(GOBUILD) -o ${MAIN_BINARY} main.go
+	$(GOBUILD) -o ${MAIN_BINARY} cmd/webhook/main.go
 
 build-linux: ## Build a linux binary
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(MAIN_BINARY_UNIX) main.go
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o ${TOKEN_BINARY_UNIX} gtoken.go
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(MAIN_BINARY_UNIX) cmd/webhook/main.go
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o ${TOKEN_BINARY_UNIX} cmd/token/main.go
 
 clean: ## Clean the working dir and it's compiled binary
 	if [ -f ${MAIN_BINARY} ] ; then rm ${MAIN_BINARY} ; fi
@@ -39,7 +39,7 @@ test: ## Run test coverage
 	$(GOTEST) -v -cover -covermode=atomic ./...
 
 run: ## Compile and run the main program
-	$(GORUN) main.go
+	$(GORUN) cmd/webhook/main.go
 
 list: ## Print the current module's dependencies.
 	$(GOLIST) -m all
